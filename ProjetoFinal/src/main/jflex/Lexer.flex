@@ -28,47 +28,63 @@ import java.io.IOException; // Import necessário caso ocorram exceções de I/O
 // ---------------------- REGRAS LÉXICAS ----------------------
 
 // Palavras reservadas do Java
-"if"        { return "IF"; }         // Token para palavra-chave if
-"else"      { return "ELSE"; }       // Token para palavra-chave else
-"int"       { return "INT"; }        // Token para tipo inteiro
-"public"    { return "PUBLIC"; }     // Token para palavra-chave public
-"class"     { return "CLASS"; }      // Token para palavra-chave class
-"static"    { return "STATIC"; }     // Token para palavra-chave static
-"void"      { return "VOID"; }       // Token para tipo void
-"return"    { return "RETURN"; }     // Token para palavra-chave return
+"if"            { return "IF"; }
+"else"          { return "ELSE"; }
+"int"           { return "INT"; }
+"public"        { return "PUBLIC"; }
+"class"         { return "CLASS"; }
+"static"        { return "STATIC"; }
+"void"          { return "VOID"; }
+"return"        { return "RETURN"; }
+"import"        { return "IMPORT"; }
+"package"       { return "PACKAGE"; }
+"true"          { return "TRUE"; }
+"false"         { return "FALSE"; }
+"while"         { return "WHILE"; }
+"for"           { return "FOR"; }
+"String"        { return "STRING_TYPE"; } // Tipo de dado String
 
 // Operadores aritméticos
-"+"         { return "PLUS"; }       // Soma
-"-"         { return "MINUS"; }      // Subtração
-"*"         { return "MULT"; }       // Multiplicação
-"/"         { return "DIV"; }        // Divisão
+"+"             { return "PLUS"; }
+"-"             { return "MINUS"; }
+"*"             { return "MULT"; }
+"/"             { return "DIV"; }
+
+// Operadores lógicos
+"&&"            { return "AND"; }
+"||"            { return "OR"; }
+"!"             { return "NOT"; }
 
 // Operadores relacionais
-"=="        { return "EQ"; }         // Igualdade
-"!="        { return "NEQ"; }        // Diferença
-"<"         { return "LT"; }         // Menor que
-">"         { return "GT"; }         // Maior que
-"="         { return "ASSIGN"; }     // Atribuição
+"=="            { return "EQ"; }
+"!="            { return "NEQ"; }
+"<"             { return "LT"; }
+">"             { return "GT"; }
+"="             { return "ASSIGN"; }
 
 // Delimitadores e pontuação
-"{"         { return "LBRACE"; }     // Chave aberta
-"}"         { return "RBRACE"; }     // Chave fechada
-"("         { return "LPAREN"; }     // Parêntese aberto
-")"         { return "RPAREN"; }     // Parêntese fechado
-";"         { return "SEMICOLON"; }  // Ponto e vírgula
+"{"             { return "LBRACE"; }
+"}"             { return "RBRACE"; }
+"("             { return "LPAREN"; }
+")"             { return "RPAREN"; }
+";"             { return "SEMICOLON"; }
+"."             { return "DOT"; }
+","             { return "COMMA"; }
 
-// Identificadores (variáveis, nomes de funções, etc.)
-[a-zA-Z_][a-zA-Z0-9_]* { return "ID(" + yytext() + ")"; } 
-// Começa com letra ou underscore, seguido de letras, números ou underscore
+// Strings literais (texto entre aspas)
+\"[^\"]*\"      { return "STRING_LITERAL(" + yytext() + ")"; }
+
+// Comentários de linha única
+"//"[^\n]* { /* ignora o comentário */ }
+
+// Identificadores (variáveis, nomes de classes, etc.)
+[a-zA-Z_][a-zA-Z0-9_]* { return "ID(" + yytext() + ")"; }
 
 // Números inteiros
-[0-9]+      { return "NUMBER(" + yytext() + ")"; } 
-// Uma ou mais ocorrências de dígitos
+[0-9]+          { return "NUMBER(" + yytext() + ")"; }
 
 // Espaços e quebras de linha
-[ \t\r\n]+  { /* ignora */ }  
-// Ignora tabs, espaços e quebras de linha sem gerar token
+[ \t\r\n]+      { /* ignora */ }
 
 // Qualquer outro caractere inesperado
-.           { return "INVALID(" + yytext() + ")"; } 
-// Captura qualquer caractere que não se encaixe nas regras anteriores
+.               { return "INVALID(" + yytext() + ")"; }
